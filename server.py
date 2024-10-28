@@ -1,8 +1,19 @@
 import google.generativeai as genai
+from dotenv import load_dotenv
+from flask import Flask, jsonify, request, send_file
 import os
 
-genai.configure(api_key="os.environ["API_KEY"]")
+app = Flask(__name__)
 
+load_dotenv()
+
+genai.configure(api_key=os.environ["GEMINI_KEY"])
 model = genai.GenerativeModel("gemini-1.5-flash")
-response = model.generate_content("Write a story about a magic backpack.")
-print(response.text)
+
+@app.route('/gemini/<question>', methods=['GET'])
+def gemini(question):
+    response = model.generate_content(question)
+    return response.text
+
+if __name__ == '__main__':
+    app.run()
