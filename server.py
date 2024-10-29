@@ -13,7 +13,8 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 @app.route('/gemini/<question>', methods=['GET'])
 def gemini(question):
     response = model.generate_content(question)
-    return response.text
+    return jsonify({'response': response.text})
+#     return response.text
 
 if __name__ == '__main__':
     app.run()
