@@ -9,5 +9,5 @@ import retrofit2.http.Path
 
 interface GeminiInterface {
     @GET("gemini/{question}")
-    fun generateAnswer(@Path("question") question: String): Call<JsonObject>
+    fun generateAnswer(@Path("question") question: String): Call<GeminiResponse>
 }
