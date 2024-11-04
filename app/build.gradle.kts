@@ -59,10 +59,19 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    //icons
+    implementation(libs.androidx.icons)
+
     //retrofit and gson converter
     implementation(libs.retrofit)
 //    implementation(libs.gson)
     implementation(libs.retrofit.converter.gson)
+
+    //ml-kit text recognition
+    implementation(libs.mlkit.text.recognition)
+    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.camera2)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
