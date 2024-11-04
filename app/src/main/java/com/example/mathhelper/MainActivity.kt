@@ -73,6 +73,8 @@ fun Greeting(name: String, modifier: Modifier = Modifier, api: GeminiInterface) 
         )
         Button(
             onClick = {
+                //has a lambda for updating answer, and since answer is rememberSaveable, it's change will trigger recomposition
+                //was required because solveQuery has a asynchronous call and returns answer delayed.
                 solveQuery(query, api) { result ->
                     answer = result
                 }
