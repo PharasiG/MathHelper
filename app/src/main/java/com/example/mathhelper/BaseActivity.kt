@@ -1,25 +1,26 @@
 package com.example.mathhelper
 
 import android.Manifest
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
-//Permission handler (for camera) and also reduces complexity in MainActivity
 open class BaseActivity : ComponentActivity() {
+    // Key Point: Managing Camera Permission State
+    private val _isCameraPermissionGranted = MutableStateFlow(false)
+    val isCameraPermissionGranted: StateFlow<Boolean> = _isCameraPermissionGranted
 
-    // Key Point 1: Camera Permission Request Launcher
     // Declare a launcher for the camera permission request, handling the permission result
     private val cameraPermissionRequestLauncher: ActivityResultLauncher<String> =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted: Boolean ->
             if (isGranted) {
-                // Permission granted: proceed with opening the camera
-                startDefaultCamera()
+                // Permission granted, update the state
+                _isCameraPermissionGranted.value = true
             } else {
                 // Permission denied: inform the user to enable it through settings
                 Toast.makeText(
@@ -30,14 +31,6 @@ open class BaseActivity : ComponentActivity() {
             }
         }
 
-    // Key Point 2: Camera Intent Launcher
-    // Declare a launcher for taking a picture, handling the result of the camera app
-    private val takePictureLauncher: ActivityResultLauncher<Intent> =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            // This can be expanded to handle the result data
-            Toast.makeText(this, "Photo taken", Toast.LENGTH_SHORT).show()
-        }
-
     // Checks camera permission and either starts the camera directly or requests permission
     fun handleCameraPermission() {
         when {
@@ -45,26 +38,15 @@ open class BaseActivity : ComponentActivity() {
                 this,
                 Manifest.permission.CAMERA
             ) == PackageManager.PERMISSION_GRANTED -> {
-                // Permission is already granted: start the camera
-                startDefaultCamera()
+                // Permission is already granted, update the state
+                _isCameraPermissionGranted.value = true
+                // Start the camera preview
+//                CameraPreview()
             }
 
             else -> {
                 // Permission is not granted: request it
                 cameraPermissionRequestLauncher.launch(Manifest.permission.CAMERA)
-            }
-        }
-    }
-
-    // Starts the default camera app for taking a picture
-    private fun startDefaultCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                // Camera app is available: launch it
-                takePictureLauncher.launch(takePictureIntent)
-            } ?: run {
-                // No camera app available: inform the user
-                Toast.makeText(this, "No camera app available", Toast.LENGTH_SHORT).show()
             }
         }
     }

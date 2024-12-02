@@ -1,11 +1,10 @@
-package com.example.mathhelper
+package com.example.mathhelper.gemini
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 //this object ensures that only one instance of retrofit is created and thus only one
 //connection is established with the server at a time
-
 object RetrofitClient {
     fun getInstance(): Retrofit {
 //        for emulator

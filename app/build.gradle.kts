@@ -63,10 +63,16 @@ dependencies {
     //icons
     implementation(libs.androidx.icons)
 
+    //navigation
+    implementation(libs.androidx.navigation)
+
     //retrofit and gson converter
     implementation(libs.retrofit)
-//    implementation(libs.gson)
+    //implementation(libs.gson)
     implementation(libs.retrofit.converter.gson)
+
+    //viewmodel
+    implementation(libs.androidx.viewmodel)
 
     //ml-kit text recognition
     implementation(libs.mlkit.text.recognition)

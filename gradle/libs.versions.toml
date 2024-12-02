@@ -11,6 +11,7 @@ composeBom = "2024.10.01"
 retrofit = "2.1.0"
 mlkit-text-recognition = "19.0.1"
 cameraView = "1.4.0"
+nav_version = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -36,6 +37,10 @@ androidx-camera-view = { group = "androidx.camera", name = "camera-view", versio
 androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraView" }
 
 androidx-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
+
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_version"}
+
+androidx-viewmodel = { group = "androidx.compose.runtime", name = "runtime-livedata"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
