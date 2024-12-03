@@ -10,8 +10,8 @@ activityCompose = "1.9.3"
 composeBom = "2024.10.01"
 retrofit = "2.1.0"
 mlkit-text-recognition = "19.0.1"
-cameraView = "1.4.0"
-nav_version = "2.8.4"
+camera = "1.4.0"
+navigation = "2.8.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,12 +33,15 @@ retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = 
 retrofit-converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", version.ref = "retrofit"}
 
 mlkit-text-recognition = { group = "com.google.android.gms", name = "play-services-mlkit-text-recognition", version.ref = "mlkit-text-recognition"}
-androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "cameraView" }
-androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "cameraView" }
+
+androidx-camera-view = { group = "androidx.camera", name = "camera-view", version.ref = "camera" }
+androidx-camera-camera2 = { group = "androidx.camera", name = "camera-camera2", version.ref = "camera" }
+androidx-camera-core = { group = "androidx.camera", name = "camera-core", version.ref = "camera"}
+androidx-camera-lifecycle = { group = "androidx.camera", name = "camera-lifecycle", version.ref = "camera" }
 
 androidx-icons = { group = "androidx.compose.material", name = "material-icons-extended" }
 
-androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "nav_version"}
+androidx-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation"}
 
 androidx-viewmodel = { group = "androidx.compose.runtime", name = "runtime-livedata"}
 

@@ -1,5 +1,10 @@
 package com.example.mathhelper.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,23 +25,52 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import com.example.mathhelper.gemini.GeminiInterface
 import com.example.mathhelper.gemini.GeminiResponse
+import com.example.mathhelper.navigation.Camera
 import com.example.mathhelper.ui.theme.MathHelperTheme
 import com.example.mathhelper.viewmodel.QueryViewModel
 import retrofit2.Call
 
+const val TAG = "QUERY_SCREEN"
+
 @Composable
 fun QueryScreen(navController: NavHostController, viewModel: QueryViewModel) {
+
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            Log.d(TAG,"CAMERA PERMISSION GRANTED")
+            navController.navigate(Camera.route)
+        } else {
+            Log.d(TAG,"CAMERA PERMISSION DENIED")
+        }
+    }
+    val context = LocalContext.current
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 onClick = {
-//                    openCamera()
+                    when (PackageManager.PERMISSION_GRANTED) {
+                        ContextCompat.checkSelfPermission(
+                            context,
+                            Manifest.permission.CAMERA
+                        ) -> {
+                            navController.navigate(Camera.route)
+                        }
+                        else -> {
+                            // Asking for permission
+                            launcher.launch(Manifest.permission.CAMERA)
+                        }
+                    }
                 },
                 icon = { Icon(Icons.Default.Add, "Extended floating action button.") },
                 text = { Text(text = "Ask with photo") },
@@ -83,11 +117,6 @@ fun Query(
         }
     }
 }
-
-//private fun openCamera() {
-//    //this checks (and asks if not given) camera permission and launches camera
-//    BaseActivity().handleCameraPermission()
-//}
 
 
 //@Preview(showBackground = true, showSystemUi = true)

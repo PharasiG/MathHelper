@@ -4,12 +4,17 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mathhelper.navigation.Camera
 import com.example.mathhelper.navigation.Query
+import com.example.mathhelper.ui.screens.CameraScreen
 import com.example.mathhelper.ui.screens.QueryScreen
 import com.example.mathhelper.ui.theme.MathHelperTheme
 import com.example.mathhelper.viewmodel.QueryViewModel
@@ -61,6 +66,9 @@ private fun MyNavigation(queryViewModel: QueryViewModel) {
     ) {
         composable(route = Query.route) {
             QueryScreen(navController, queryViewModel)
+        }
+        composable(route = Camera.route) {
+            CameraScreen(navController)
         }
     }
 }

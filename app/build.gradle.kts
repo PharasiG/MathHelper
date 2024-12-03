@@ -76,8 +76,12 @@ dependencies {
 
     //ml-kit text recognition
     implementation(libs.mlkit.text.recognition)
+
+    //camera
     implementation(libs.androidx.camera.view)
     implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.core)
+    implementation(libs.androidx.camera.lifecycle)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

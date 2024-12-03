@@ -7,3 +7,7 @@ interface Destinations {
 object Query : Destinations {
     override val route = "Query"
 }
+
+object Camera : Destinations {
+    override val route = "Camera"
+}
