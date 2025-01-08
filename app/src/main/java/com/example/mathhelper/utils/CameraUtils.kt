@@ -4,6 +4,8 @@ import android.content.ContentValues
 import android.content.Context
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
+import android.util.Size
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
@@ -11,6 +13,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.core.content.ContextCompat
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+
+const val TAG = "CameraX"
 
 object CameraUtils {
 
@@ -35,8 +39,27 @@ object CameraUtils {
         preview.surfaceProvider = previewView.surfaceProvider
     }
 
-    fun captureImage(imageCapture: ImageCapture, context: Context) {
-        val name = "CameraxImage.jpeg"
+
+//    fun analyzeImage() {
+//        val imageAnalysis = ImageAnalysis.Builder()
+//            // enable the following line if RGBA output is needed.
+//            .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
+//            .setTargetResolution(Size(1280, 720))
+//            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+//            .build()
+//        imageAnalysis.setAnalyzer(executor, ImageAnalysis.Analyzer { imageProxy ->
+//            val rotationDegrees = imageProxy.imageInfo.rotationDegrees
+//            // insert your code here.
+//            //...
+//            // after done, release the ImageProxy object
+//            imageProxy.close()
+//        })
+//
+//        cameraProvider.bindToLifecycle(this as LifecycleOwner, cameraSelector, imageAnalysis, preview)
+//    }
+
+    fun captureImage(imageCapture: ImageCapture, context: Context, onImageSaved: (String) -> Unit) {
+        val name = "CameraxImage_${System.currentTimeMillis()}.jpeg"
         val contentValues = ContentValues().apply {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
@@ -58,11 +81,12 @@ object CameraUtils {
             ContextCompat.getMainExecutor(context),
             object : ImageCapture.OnImageSavedCallback {
                 override fun onImageSaved(outputFileResults: ImageCapture.OutputFileResults) {
-                    println("Image Saved Successfully")
+                    Log.i(TAG, "Image Saved Successfully at ${outputFileResults.savedUri.toString()}")
+                    onImageSaved(outputFileResults.savedUri.toString())
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    println("Image Save Failed: $exception")
+                    Log.e(TAG, "Image Save Failed: $exception")
                 }
             }
         )

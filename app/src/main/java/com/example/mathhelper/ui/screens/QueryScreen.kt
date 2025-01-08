@@ -20,9 +20,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -30,12 +27,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.example.mathhelper.gemini.GeminiInterface
 import com.example.mathhelper.gemini.GeminiResponse
-import com.example.mathhelper.navigation.Camera
+import com.example.mathhelper.navigation.NavigationItem
 import com.example.mathhelper.ui.theme.MathHelperTheme
 import com.example.mathhelper.viewmodel.QueryViewModel
-import retrofit2.Call
 
 const val TAG = "QUERY_SCREEN"
 
@@ -47,7 +44,7 @@ fun QueryScreen(navController: NavHostController, viewModel: QueryViewModel) {
     ) { isGranted: Boolean ->
         if (isGranted) {
             Log.d(TAG,"CAMERA PERMISSION GRANTED")
-            navController.navigate(Camera.route)
+            navController.navigate(NavigationItem.Camera.route)
         } else {
             Log.d(TAG,"CAMERA PERMISSION DENIED")
         }
@@ -64,7 +61,7 @@ fun QueryScreen(navController: NavHostController, viewModel: QueryViewModel) {
                             context,
                             Manifest.permission.CAMERA
                         ) -> {
-                            navController.navigate(Camera.route)
+                            navController.navigate(NavigationItem.Camera.route)
                         }
                         else -> {
                             // Asking for permission
@@ -90,7 +87,6 @@ fun Query(
     modifier: Modifier = Modifier,
     viewModel: QueryViewModel
 ) {
-    val api = viewModel.api
     val query by viewModel.query
     val answer by viewModel.answer
 
@@ -119,16 +115,8 @@ fun Query(
 }
 
 
-//@Preview(showBackground = true, showSystemUi = true)
-//@Composable
-//fun GreetingPreview() {
-//    MathHelperTheme {
-//        Query(
-//            api = object : GeminiInterface {
-//                override fun generateAnswer(question: String): Call<GeminiResponse> {
-//                    TODO("Not yet implemented")
-//                }
-//            },
-//        )
-//    }
-//}
+@Preview(showBackground = true)
+@Composable
+fun QueryScreenPreview() {
+    QueryScreen(navController = rememberNavController(), viewModel = QueryViewModel())
+}

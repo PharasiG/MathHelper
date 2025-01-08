@@ -15,7 +15,7 @@ import retrofit2.Response
 class QueryViewModel : ViewModel() {
     //api initialization
     private val retrofit = RetrofitClient.getInstance()
-    val api = retrofit.create(GeminiInterface::class.java)
+    private val api = retrofit.create(GeminiInterface::class.java)
 
     private val _query = mutableStateOf("")
     val query: State<String> = _query

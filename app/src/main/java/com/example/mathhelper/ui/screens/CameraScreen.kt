@@ -1,6 +1,9 @@
 package com.example.mathhelper.ui.screens
 
 import android.content.Context
+import android.net.Uri
+import android.util.Log
+import android.widget.Toast
 import androidx.camera.core.ImageCapture
 import androidx.camera.view.PreviewView
 import androidx.compose.foundation.background
@@ -21,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavHostController
+import com.example.mathhelper.navigation.NavigationItem
 import com.example.mathhelper.utils.CameraUtils
 
 @Composable
@@ -49,19 +53,30 @@ fun CameraScreen(navController: NavHostController) {
     // UI layout
     Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
         AndroidView({ previewView }, modifier = Modifier.fillMaxSize())
-        ShutterButton(imageCapture = imageCapture, context = context)
+        ShutterButton(navController = navController, imageCapture = imageCapture, context = context)
     }
 }
 
 @Composable
-fun ShutterButton(imageCapture: ImageCapture, context: Context) {
+fun ShutterButton(navController: NavHostController, imageCapture: ImageCapture, context: Context) {
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(16.dp)
             .size(72.dp)
             .background(color = Color.White, shape = CircleShape)
-            .clickable { CameraUtils.captureImage(imageCapture, context) }
+            .clickable {
+                CameraUtils.captureImage(
+                    imageCapture,
+                    context,
+                    onImageSaved = {
+                        Log.d("CameraScreen", it)
+                        val encodedUri = Uri.encode(it)
+                        navController.navigate(NavigationItem.PreviewImage.route + "/$encodedUri")
+                    }
+                )
+
+            }
     ) {
         Box(
             modifier = Modifier

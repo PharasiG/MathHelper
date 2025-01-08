@@ -83,6 +83,9 @@ dependencies {
     implementation(libs.androidx.camera.core)
     implementation(libs.androidx.camera.lifecycle)
 
+    //coil
+    implementation(libs.io.coil)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

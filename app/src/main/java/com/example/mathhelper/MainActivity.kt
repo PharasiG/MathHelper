@@ -1,20 +1,20 @@
 package com.example.mathhelper
 
+import android.net.Uri
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.mathhelper.navigation.Camera
-import com.example.mathhelper.navigation.Query
+import androidx.navigation.navArgument
+import com.example.mathhelper.navigation.NavigationItem
 import com.example.mathhelper.ui.screens.CameraScreen
+import com.example.mathhelper.ui.screens.ImagePreviewScreen
 import com.example.mathhelper.ui.screens.QueryScreen
 import com.example.mathhelper.ui.theme.MathHelperTheme
 import com.example.mathhelper.viewmodel.QueryViewModel
@@ -22,7 +22,6 @@ import com.example.mathhelper.viewmodel.QueryViewModel
 const val KEY_EVENT_ACTION = "key_event_action"
 const val KEY_EVENT_EXTRA = "key_event_extra"
 const val TAG = "MainActivity"
-
 
 //CHEETAH
 class MainActivity : ComponentActivity() {
@@ -62,13 +61,23 @@ class MainActivity : ComponentActivity() {
 private fun MyNavigation(queryViewModel: QueryViewModel) {
     val navController = rememberNavController()
     NavHost(
-        navController = navController, startDestination = Query.route
+        navController = navController, startDestination = NavigationItem.Query.route
     ) {
-        composable(route = Query.route) {
+        composable(
+            route = NavigationItem.Query.route
+        ) {
             QueryScreen(navController, queryViewModel)
         }
-        composable(route = Camera.route) {
+        composable(route = NavigationItem.Camera.route) {
             CameraScreen(navController)
+        }
+        composable(
+            route = NavigationItem.PreviewImage.route + "/{uri}",
+            arguments = listOf(navArgument("uri") { type = NavType.StringType })
+        ) {
+            val encodedUri = it.arguments?.getString("uri") ?: ""
+            val uri = Uri.decode(encodedUri)
+            ImagePreviewScreen(navController, uri, queryViewModel)
         }
     }
 }

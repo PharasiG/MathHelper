@@ -1,13 +1,12 @@
 package com.example.mathhelper.navigation
 
-interface Destinations {
-    val route: String
+enum class Screen {
+    QUERY,
+    CAMERA,
+    PREVIEW
 }
-
-object Query : Destinations {
-    override val route = "Query"
-}
-
-object Camera : Destinations {
-    override val route = "Camera"
+sealed class NavigationItem(val route: String) {
+    data object Query : NavigationItem(Screen.QUERY.name)
+    data object Camera : NavigationItem(Screen.CAMERA.name)
+    data object PreviewImage : NavigationItem(Screen.PREVIEW.name)
 }
