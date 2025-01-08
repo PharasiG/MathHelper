@@ -1,2 +1,2 @@
-# MathHelper
-Android app for solving handwritten math problems with OCR.
+# QueryHelper
+Android app for solving queries with OCR.
