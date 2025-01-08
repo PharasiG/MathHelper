@@ -9,7 +9,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Button
@@ -28,10 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
-import com.example.mathhelper.gemini.GeminiInterface
-import com.example.mathhelper.gemini.GeminiResponse
 import com.example.mathhelper.navigation.NavigationItem
-import com.example.mathhelper.ui.theme.MathHelperTheme
 import com.example.mathhelper.viewmodel.QueryViewModel
 
 const val TAG = "QUERY_SCREEN"
@@ -89,6 +89,7 @@ fun Query(
 ) {
     val query by viewModel.query
     val answer by viewModel.answer
+    val scrollState = rememberScrollState()
 
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -99,10 +100,14 @@ fun Query(
             value = query,
             onValueChange = { viewModel.updateQuery(it) },
             label = { Text("Enter Query") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            maxLines = 5
         )
         Text(
-            text = answer
+            text = answer,
+            modifier = Modifier
+                .heightIn(min = 10.dp, max = 250.dp)
+                .verticalScroll(scrollState)
         )
         Button(
             onClick = {
@@ -115,7 +120,7 @@ fun Query(
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun QueryScreenPreview() {
     QueryScreen(navController = rememberNavController(), viewModel = QueryViewModel())
